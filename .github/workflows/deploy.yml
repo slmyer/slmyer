@@ -1,28 +1,38 @@
-name: Deploy Project
+name: Deploy to Server
 
 on:
   push:
     branches:
-      - main
+      - main # 触发条件，当代码推送到 main 分支时触发此流程
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
+
     steps:
-      # 检出代码
+      # Step 1: 检出代码
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 设置 SSH 代理并添加私钥
+      # Step 2: 设置 SSH agent 并添加私钥
       - name: Set up SSH agent
         run: |
           eval "$(ssh-agent -s)"
           echo "${{ secrets.SSH_PRIVATE_KEY }}" | tr -d '\r' | ssh-add - > /dev/null
 
-      # 添加服务器到 known_hosts，避免 SSH 提示
-      - name: Add server to known hosts
-        run: ssh-keyscan -H 106.14.135.224 >> ~/.ssh/known_hosts
+      # Step 3: 确保 SSH 目录存在
+      - name: Ensure SSH directory exists
+        run: mkdir -p ~/.ssh
 
-      # 测试 SSH 连接
+      # Step 4: 将服务器的公钥加入 known_hosts 文件中
+      - name: Add server to known hosts
+        run: ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+
+      # Step 5: 使用 SSH 连接到服务器并运行命令
       - name: Test SSH connection
-        run: ssh -o StrictHostKeyChecking=no -p 2222 user@106.14.135.224 "echo 'SSH connection successful'"
+        run: ssh -o StrictHostKeyChecking=no -p 2222 ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "echo 'SSH connection successful'"
+
+      # Step 6: 拉取代码到服务器
+      - name: Deploy to server
+        run: |
+          ssh -o StrictHostKeyChecking=no -p 2222 ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "cd /path/to/your/project && git pull origin main && docker-compose down && docker-compose up --build -d"
