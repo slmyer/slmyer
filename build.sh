@@ -2,7 +2,7 @@
 
 # 读取环境变量
 PROJECT_DIR=${PROJECT_DIR:-"/slmyer/slmyer"}
-REPO_URL=${REPO_URL:-"git@github.com:slmyer/slmyer.git"}
+REPO_URL=${REPO_URL:-"https://github.com/slmyer/slmyer.git"}
 DOCKER_IMAGE_NAME=${DOCKER_IMAGE_NAME:-"slmyer-blog"}
 
 # 检查项目目录是否存在，不存在则克隆仓库
