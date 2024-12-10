@@ -1,101 +1,85 @@
-import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const recentPosts = [
+    {
+      title: "使用Next.js构建极简博客",
+      excerpt:
+        "本指南介绍如何使用Next.js和现代Web技术创建一个简洁的极简主义博客。",
+      date: "2024-01-10",
+      slug: "building-minimalist-blog",
+      category: "Web开发",
+      tags: ["Next.js", "React", "设计"],
+    },
+    {
+      title: "设计中简约的力量",
+      excerpt: "探索极简主义设计原则如何提升用户体验和内容可读性。",
+      date: "2024-01-05",
+      slug: "power-of-simplicity",
+      category: "设计",
+      tags: ["用户体验", "极简主义", "网页设计"],
+    },
+    {
+      title: "现代Web开发实践",
+      excerpt: "概述当前Web开发的最佳实践及其实施方法。",
+      date: "2024-01-01",
+      slug: "modern-web-development",
+      category: "Web开发",
+      tags: ["最佳实践", "前端", "后端"],
+    },
+  ];
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  return (
+    <div className="space-y-12 py-12">
+      <section className="space-y-6">
+        <h1 className="text-4xl font-bold leading-tight bg-clip-text  bg-gradient-to-r from-primary to-purple-600">
+          欢迎来到我的网络角落。
+        </h1>
+        <p className="text-xl text-muted-foreground leading-relaxed">
+          我写关于Web开发、设计和技术的文章。 这里是我分享思想和经验的空间。
+        </p>
+        <div>
+          <button className="flex flex-row items-center">
+            浏览所有文章
+            <ArrowRight className="ml-2 h-4 w-4 transition-transform group-hover:translate-x-1" />
+          </button>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+      </section>
+
+      <section className="space-y-8">
+        <h2 className="text-3xl font-bold">最新文章</h2>
+        <div className="space-y-8">
+          {recentPosts.map((post) => (
+            <article
+              key={post.slug}
+              className="group space-y-3 bg-white dark:bg-gray-800 p-6 rounded-lg shadow-sm hover:shadow-md transition-shadow"
+            >
+              <Link href={`/blog/${post.slug}`} className="block space-y-2">
+                <div className="flex items-center space-x-2 mb-2">
+                  {/* <Badge variant="secondary">{post.category}</Badge>
+                  {post.tags.map((tag) => (
+                    <Badge key={tag} variant="outline">
+                      {tag}
+                    </Badge> */}
+                  {/* ))} */}
+                </div>
+                <h3 className="text-2xl font-semibold group-hover:text-primary transition-colors">
+                  {post.title}
+                </h3>
+                <p className="text-muted-foreground">{post.excerpt}</p>
+                <p className="text-sm text-muted-foreground">
+                  {new Date(post.date).toLocaleDateString("zh-CN", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </p>
+              </Link>
+            </article>
+          ))}
+        </div>
+      </section>
     </div>
   );
 }

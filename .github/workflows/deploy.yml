@@ -3,7 +3,7 @@ name: Deploy to Server
 on:
   push:
     branches:
-      - main  # 只在推送到 main 分支时触发
+      - main # 只在推送到 main 分支时触发
 
 jobs:
   deploy:
@@ -20,5 +20,23 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }} # SSH 私钥，已配置在 GitHub Secrets 中
           port: 2222 # 你的自定义 SSH 端口
           script: |
-            cd /slmyer
-            git pull
+            # 设置项目路径和仓库地址，作为动态环境变量
+            PROJECT_DIR="/slmyer/slmyer"
+            REPO_URL="git@github.com:slmyer/slmyer.git"
+
+            # 进入项目目录，如果不存在则克隆仓库
+            cd $PROJECT_DIR || git clone $REPO_URL $PROJECT_DIR && cd $PROJECT_DIR
+
+            # 拉取最新的代码并重置任何本地更改
+            git reset --hard
+            git pull origin main
+
+            # 构建 Docker 镜像
+            docker build -t slmyer-blog .
+
+            # 停止并删除旧的容器，如果它存在
+            docker stop slmyer-blog || true
+            docker rm slmyer-blog || true
+
+            # 启动新的容器
+            docker run -d --name slmyer-blog -p 80:3000 slmyer-blog
