@@ -31,12 +31,5 @@ jobs:
             git reset --hard
             git pull origin main
 
-            # 构建 Docker 镜像
-            docker build -t slmyer-blog .
-
-            # 停止并删除旧的容器，如果它存在
-            docker stop slmyer-blog || true
-            docker rm slmyer-blog || true
-
-            # 启动新的容器
-            docker run -d --name slmyer-blog -p 80:3000 slmyer-blog
+            # 启动docker
+            docker-compose -f docker-compose.yaml up -d

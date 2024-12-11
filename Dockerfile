@@ -24,11 +24,5 @@ COPY --from=build /app ./
 # 安装生产环境的依赖
 RUN npm install --only=production
 
-# 设置环境变量（可选
-ENV PORT=3000
-
-# 暴露应用的端口
-EXPOSE 3000
-
 # 启动 Next.js 应用
 CMD ["npm", "start"]
