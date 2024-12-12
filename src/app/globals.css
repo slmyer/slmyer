@@ -25,6 +25,7 @@
     --ring: 221.2 83.2% 53.3%;
     --radius: 0.5rem;
     --font-open-sans: "Open Sans", sans-serif;
+    --font-geist: "Geist", Arial, sans-serif;
   }
 
   .dark {
@@ -64,5 +65,28 @@
   h5,
   h6 {
     font-family: var(--font-geist);
+  }
+}
+
+.animation-delay-500 {
+  animation-delay: 500ms;
+}
+
+.animate-draw {
+  animation: draw 2s ease-in-out infinite;
+}
+
+@keyframes draw {
+  0% {
+    stroke-dashoffset: 300;
+    opacity: 0;
+  }
+  50% {
+    stroke-dashoffset: 150;
+    opacity: 0.5;
+  }
+  100% {
+    stroke-dashoffset: 0;
+    opacity: 1;
   }
 }

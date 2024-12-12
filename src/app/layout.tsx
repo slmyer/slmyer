@@ -19,7 +19,7 @@ const open_sans = Open_Sans({
 export const metadata: Metadata = {
   title: "Slmyer Blog",
   description: "A minimalist personal blog with a touch of elegance",
-  icons: "",
+  icons: "/slmyer.png",
 };
 
 export default function RootLayout({

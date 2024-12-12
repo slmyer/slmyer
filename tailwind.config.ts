@@ -16,6 +16,16 @@ export default {
         sans: ["var(--font-sans)"],
         mono: ["var(--font-geist)"],
       },
+      animation: {
+        draw: "draw 2s ease-in-out infinite",
+      },
+      keyframes: {
+        draw: {
+          "0%": { strokeDashoffset: "300", opacity: "0" },
+          "50%": { strokeDashoffset: "150", opacity: "0.5" },
+          "100%": { strokeDashoffset: "300", opacity: "1" },
+        },
+      },
     },
   },
   plugins: [],
