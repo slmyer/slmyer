@@ -1,2 +1,9 @@
 services:
   slmyer:
+    container_name: slmyer-blog
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 3000:3000
