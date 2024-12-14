@@ -32,4 +32,5 @@ jobs:
             git pull origin main
 
             # 启动docker
-            docker-compose -f docker-compose.yaml up -d
+            docker compose down
+            docker compose up -d --build
