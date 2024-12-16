@@ -1,43 +1,45 @@
-# Install dependencies only when needed
-FROM node:alpine AS deps
-# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.
-RUN apk add --no-cache libc6-compat
-WORKDIR /app
-COPY package.json yarn.lock ./
-RUN yarn install --frozen-lockfile
+# 第一阶段: 安装依赖
+FROM node:18 AS deps
 
-# Rebuild the source code only when needed
-FROM node:alpine AS builder
+# 设置工作目录
 WORKDIR /app
+
+# 复制依赖文件
+COPY package.json package-lock.json ./
+
+# 安装依赖，只安装生产环境和开发环境的基本依赖
+RUN npm install
+
+# 第二阶段: 构建阶段
+FROM node:18 AS build
+
+# 设置工作目录
+WORKDIR /app
+
+# 复制所有源代码
 COPY . .
-COPY --from=deps /app/node_modules ./node_modules
-RUN yarn build && yarn install --production --ignore-scripts --prefer-offline
 
-# Production image, copy all the files and run next
-FROM node:alpine AS runner
+# 复制第一阶段安装的依赖
+COPY --from=deps /app/node_modules ./node_modules
+
+# 构建 Next.js 应用
+RUN npm run build
+
+# 第三阶段: 运行阶段
+FROM node:18-alpine AS runtime
+
+# 设置工作目录
 WORKDIR /app
 
-ENV NODE_ENV production
+# 仅复制必要文件以减小最终镜像体积
+COPY --from=build /app/.next ./.next
+COPY --from=build /app/node_modules ./node_modules
+COPY --from=build /app/package.json ./package.json
+COPY --from=build /app/public ./public
 
-RUN addgroup -g 1001 -S nodejs
-RUN adduser -S nextjs -u 1001
-
-# You only need to copy next.config.js if you are NOT using the default configuration
-# COPY --from=builder /app/next.config.js ./
-COPY --from=builder /app/public ./public
-COPY --from=builder --chown=nextjs:nodejs /app/.next ./.next
-COPY --from=builder /app/node_modules ./node_modules
-COPY --from=builder /app/package.json ./package.json
-
-USER nextjs
-
+# 设置环境变量
+ENV PORT=3000
 EXPOSE 3000
 
-ENV PORT 3000
-
-# Next.js collects completely anonymous telemetry data about general usage.
-# Learn more here: https://nextjs.org/telemetry
-# Uncomment the following line in case you want to disable telemetry.
-# ENV NEXT_TELEMETRY_DISABLED 1
-
-CMD ["node_modules/.bin/next", "start"]
+# 启动应用
+CMD ["npm", "start"]
