@@ -6,7 +6,7 @@ WORKDIR /app
 # 仅拷贝必要文件以利用 Docker 缓存
 COPY package.json package-lock.json* .npmrc* ./
 
-RUN npm ci --omit=dev
+RUN npm ci 
 
 # 阶段 2：构建
 FROM base AS builder
