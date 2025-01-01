@@ -13,4 +13,4 @@ I'm Slmyer, a passionate web fronter from Shanghai China.
 
 ## 📫 How to reach me
 
-- Personal website is under preparation...
+- [Slmyer Blog 网站地址](slmyer.cn)
