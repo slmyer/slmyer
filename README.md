@@ -11,6 +11,6 @@ I'm Slmyer, a passionate web fronter from Shanghai China.
 - Programming Languages: `JavaScript`, `Rust`
 - Frameworks: `React`, `Vue.js`, `NodeJS`
 
-## 📫 How to reach me
+## About Me
 
-- [Slmyer Blog 网站地址](slmyer.cn)
+- [slmyer.cn](slmyer.cn)
